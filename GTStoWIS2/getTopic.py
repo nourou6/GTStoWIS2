@@ -1,4 +1,5 @@
 import json
+import re
 from sys import argv
 
 ########### functions   ########
@@ -13,6 +14,10 @@ def getTTAAiiFromFilename(filename):
     TTAAii = filename[2:8]
     return TTAAii
 
+def wmoFileName(filename):
+    pattern = re.compile("^A_[A-Za-z]{4}[0-9]{2}[A-Za-z]{4}[0-9]{6}")
+    match = re.search(pattern, filename)
+    return match
 
 # get CCCC subtopic
 def getSubtopic_CCCC(c):
@@ -87,6 +92,9 @@ def getSubtopicTableA1(myT1, myT2, myA1, myA2, myii, mytableA1):
                                 subTopicA1 = C6[TT][myA1]["ii"][iiKey]
                         else:
                             subTopicA1 = C6[TT][myA1]
+                    else:
+                        if "A-Z" in C6[TT].keys():
+                            subTopicA1 =  C6[TT]["A-Z"]
     return subTopicA1
 
 def getSubtopicTableA2(myA2, mytableA2):
@@ -105,50 +113,6 @@ def getSubtopicTableA2(myA2, mytableA2):
                     subTopicA2 = C5[myA2]
     return subTopicA2
 
-########### read files   #######
-################################
-#read file CCCC
-cf=open("TableCCCC.json","r")
-CCCC=json.load(cf)
-cf.close()
-
-# read WMO Tables
-fromTableA = open("TableA.json","r")
-A = json.load(fromTableA)
-fromTableA.close()
-
-fromTableB = open("TableB.json","r")
-B = json.load(fromTableB)
-fromTableB.close()
-
-fromTableC1 = open("TableC1.json","r")
-C1 = json.load(fromTableC1)
-fromTableC1.close()
-
-fromTableC2 = open("TableC2.json","r")
-C2 = json.load(fromTableC2)
-fromTableC2.close()
-
-fromTableC3 = open("TableC3.json","r")
-C3 = json.load(fromTableC3)
-fromTableC3.close()
-
-fromTableC4 = open("TableC4.json","r")
-C4 = json.load(fromTableC4)
-fromTableC4.close()
-
-fromTableC5 = open("TableC5.json","r")
-C5 = json.load(fromTableC5)
-fromTableC5.close()
-
-fromTableC6 = open("TableC6.json","r")
-C6 = json.load(fromTableC6)
-fromTableC6.close()
-
-fromTableC7 = open("TableC7.json","r")
-C7 = json.load(fromTableC7)
-fromTableC7.close()
-
 
 #### programm ####
 ##################
@@ -158,55 +122,108 @@ separator = "/"
 
 # read TTAAii and CCCC from args
 try:
-    inputTTAAii = getTTAAiiFromFilename(str(argv[1]))
-    input_c = getCCCCfromFilename(str(argv[1]))
+    if wmoFileName(str(argv[1])):
+        inputTTAAii = getTTAAiiFromFilename(str(argv[1]))
+        input_c = getCCCCfromFilename(str(argv[1]))
+    else:
+        print("Please insert an argument for a filename like A_ISID01LZIB190300_C_EDZW_*")
 except IndexError:
-    print('missing argument')
+    print('missing argument for filename')
 except ValueError:
     print('argument must be a string for a filename like A_ISID01LZIB190300_C_EDZW_*')
 
 # test default filename
-if inputTTAAii == "":
-    inputTTAAii = getTTAAiiFromFilename("A_ISID01LZIB190300_C_EDZW_20200619030401_18422777")  
+#if inputTTAAii == "":
+    #inputTTAAii = getTTAAiiFromFilename("A_ISID01LZIB190300_C_EDZW_20200619030401_18422777")  
 
-if input_c == "":
-    input_c = getCCCCfromFilename("A_ISID01LZIB190300_C_EDZW_20200619030401_18422777")
+#if input_c == "":
+    #input_c = getCCCCfromFilename("A_ISID01LZIB190300_C_EDZW_20200619030401_18422777")
 
-T1 = inputTTAAii[0:1]
-T2 = inputTTAAii[1:2]
-A1 = inputTTAAii[2:3]
-A2 = inputTTAAii[3:4]
-ii = inputTTAAii[4:6]
+if inputTTAAii != "" and input_c != "":
+    ########### read files   #######
+    ################################
+    #read file CCCC
+    cf=open("TableCCCC.json","r")
+    CCCC=json.load(cf)
+    cf.close()
 
-tableT2 = A[T1]["T2"]
-tableA1 = A[T1]["A1"]
-tableA2 = A[T1]["A2"]
-topic = A[T1]["topic"]
+    # read WMO Tables
+    fromTableA = open("TableA.json","r")
+    A = json.load(fromTableA)
+    fromTableA.close()
 
-subtopic_cccc = getSubtopic_CCCC(input_c)
-subtopicT2 = ""
-subtopicA1 = ""
-subtopicA2 = ""
+    fromTableB = open("TableB.json","r")
+    B = json.load(fromTableB)
+    fromTableB.close()
 
-fulltopic = subtopic_cccc + separator + topic
+    fromTableC1 = open("TableC1.json","r")
+    C1 = json.load(fromTableC1)
+    fromTableC1.close()
 
-subtopicT2 = getSubtopicTableT2(T1, T2, A1, ii, tableT2)
-if subtopicT2 != "":
-    fulltopic = fulltopic + separator + subtopicT2
-else:
-    print("subtopicT2 is empty")
+    fromTableC2 = open("TableC2.json","r")
+    C2 = json.load(fromTableC2)
+    fromTableC2.close()
 
-subtopicA1 = getSubtopicTableA1(T1, T2, A1, A2, ii, tableA1)
-if subtopicA1 != "":
-    fulltopic = fulltopic + separator + subtopicA1
-else:
-    print("subtopicA1 is empty")
+    fromTableC3 = open("TableC3.json","r")
+    C3 = json.load(fromTableC3)
+    fromTableC3.close()
 
-subtopicA2 = getSubtopicTableA2(A2, tableA2)
-if subtopicA2 != "":
-    fulltopic = fulltopic + separator + subtopicA2
-else:
-    print("subtopicA2 is empty")
+    fromTableC4 = open("TableC4.json","r")
+    C4 = json.load(fromTableC4)
+    fromTableC4.close()
+
+    fromTableC5 = open("TableC5.json","r")
+    C5 = json.load(fromTableC5)
+    fromTableC5.close()
+
+    fromTableC6 = open("TableC6.json","r")
+    C6 = json.load(fromTableC6)
+    fromTableC6.close()
+
+    fromTableC7 = open("TableC7.json","r")
+    C7 = json.load(fromTableC7)
+    fromTableC7.close()
+
+    # split input TTAAii
+    T1 = inputTTAAii[0:1]
+    T2 = inputTTAAii[1:2]
+    A1 = inputTTAAii[2:3]
+    A2 = inputTTAAii[3:4]
+    ii = inputTTAAii[4:6]
+
+    # get WMOtables for T1
+    tableT2 = A[T1]["T2"]
+    tableA1 = A[T1]["A1"]
+    tableA2 = A[T1]["A2"]
+    topic = A[T1]["topic"]
+
+    # get topic and subtopics
+    subtopic_cccc = getSubtopic_CCCC(input_c)
+    subtopicT2 = ""
+    subtopicA1 = ""
+    subtopicA2 = ""
+
+    fulltopic = subtopic_cccc + separator + topic
+
+    subtopicT2 = getSubtopicTableT2(T1, T2, A1, ii, tableT2)
+    if subtopicT2 != "":
+        fulltopic = fulltopic + separator + subtopicT2
+    else:
+        print("subtopicT2 is empty for " + inputTTAAii)
+
+    subtopicA1 = getSubtopicTableA1(T1, T2, A1, A2, ii, tableA1)
+    if subtopicA1 != "":
+        fulltopic = fulltopic + separator + subtopicA1
+    else:
+        print("subtopicA1 is empty for " + inputTTAAii)
+
+    subtopicA2 = getSubtopicTableA2(A2, tableA2)
+    if subtopicA2 != "":
+        fulltopic = fulltopic + separator + subtopicA2
+    else:
+        print("subtopicA2 is empty for " + inputTTAAii)
     
-print(fulltopic)
+    print(fulltopic)
+
+
 
