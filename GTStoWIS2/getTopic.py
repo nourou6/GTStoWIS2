@@ -154,7 +154,7 @@ fromTableC7.close()
 ##################
 inputTTAAii = ""
 input_c = ""
-deparator = "/"
+separator = "/"
 
 # read TTAAii and CCCC from args
 try:
@@ -182,8 +182,6 @@ tableT2 = A[T1]["T2"]
 tableA1 = A[T1]["A1"]
 tableA2 = A[T1]["A2"]
 topic = A[T1]["topic"]
-
-separator = "/"
 
 subtopic_cccc = getSubtopic_CCCC(input_c)
 subtopicT2 = ""
