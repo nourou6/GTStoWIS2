@@ -74,14 +74,14 @@
                      "20-39": "pilot/mobile",
                      "40-59": "pilot/ship" }},
        "X":"other"},
-"IX":{"*":"other"},
-"JN":{"*":"missing"},
+"IX":{"A-Z":"other"},
+"JN":{"A-Z":"missing"},
 "JO":{"I":"sea-ice",
       "S":"sea-surface-below",
       "T":"sea-surface-temperature",
       "W":"sea-surface-waves",
       "X":"sea-environmetal"},
-"JP":{"*":"missing"},
+"JP":{"A-Z":"missing"},
 "JS":{"A":"aviation/route",
       "D":"radiation",
       "M":"mos-or-other",
@@ -107,5 +107,5 @@
       "V":"aviation/sigwx/storms",
       "W":"aviation/sigwx/winds",
       "X":"other"},
-"JX":{"*":"missing"}
+"JX":{"A-Z":"missing"}
 }
