@@ -223,7 +223,8 @@ class GTStoWIS2():
                     if self.debug: print( "AATopic 4 self.a2topic=self.tableC3[%s]=%s" % (AA[1], self.a2topic) )
                 else: #C4
                     if TT[0] in 'DGHJOPT':
-                        self.a2topic=self.tableC4[AA[1]]
+                        #self.a2topic=self.tableC4[AA[1]]
+                        self.a2topic=""
                     if self.debug: print( "AATopic 5 self.a2topic=self.tableC4[%s]=%s" % (AA[1], self.a2topic) )
             else: 
                 if (a1 == 'C3'):
@@ -232,7 +233,8 @@ class GTStoWIS2():
 
                     if ( a2 == 'C4' ):
                         if TT[0] in 'DGHJOPT':
-                            self.a2topic=self.tableC4[ AA[1] ]
+                            #self.a2topic=self.tableC4[ AA[1] ]
+                            self.a2topic=""
                         if self.debug: print( "AATopic 6.1 self.a2topic=self.tableC4[%s] = \"%s\"" % (AA[1],self.a2topic) )
                 else:
                     if a1 == 'C1': idx='["topic"]'
